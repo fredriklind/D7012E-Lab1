@@ -1,11 +1,8 @@
-add :: Int -> Int -> Int
-add a b = a+b
 
-square :: Int -> Int
-square n = n*n
 
--- Adds two numbers, then squares them.
-addSquare :: Int -> Int -> Int
-addSquare a b = square (add a b)
+-- Remove duplicates
+rmd :: [Int] -> [Int]
+rmd [] = []
+rmd (x:xs) = x:[n | n <- rmd xs , n /= x]
 
-main = print (addSquare 2 3)
+main = print (rmd [1,2,1,2,3,3,3,3,2,2,2,2,1,2,3,1,1])
