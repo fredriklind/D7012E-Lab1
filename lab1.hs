@@ -1,27 +1,18 @@
 import Data.List
 
-
--- Remove duplicates
-rmd :: [Int] -> [Int]
-rmd [] = []
-rmd (x:y) = x:[i | i <- rmd y , i /= x]
-
-kmaxsub :: Int -> [Int] -> [(Int,Int,Int)]
-kmaxsub k x = take k(reverse(sort([(v,i,j) | n <- subsequences x, 
-                                    let v = sum n
-                                        i = head(elemIndices (head n) x)+1
-                                        j = head(elemIndices (last n) x)+1,
-                                        n `isInfixOf` x])))
-
-kmaxsubunique :: Int -> [Int] -> [(Int,Int,Int)]
-kmaxsubunique k x = kmaxsub k (rmd x)
-
-
--- Remove duplicates
--- Get all possible subsequences
--- With a list comprehension, select only continuous subsequences
--- During the list comprehension, compile the tripe with sum, start index and end index
--- Remove the first element (it's the empty list)
--- Sort the resulting list
--- Reverse that list
--- Return the k first elements
+kmaxsubunique :: [Int] -> Int -> [(Int,Int,Int)]
+kmaxsubunique x k = kmaxsub (rmd x) k
+    where rmd [] = []
+          rmd (x:y) = x:[i | i <- rmd y , i /= x]                       -- Remove duplicates
+          kmaxsub x k = take k(                                         -- Get the first k triples
+                reverse(                                                -- Reverse the list
+                    sort(                                               -- Sort the list
+                        [(v,i,j) |                                      -- Do a list comprehension on all possible subsequences
+                            n <- subsequences x,                        -- Get all subsequences
+                                let v = sum n                           -- Sum of the subsequence
+                                    i = head(elemIndices (head n) x)+1  -- Find the index of the first element in the subsequence in the original list
+                                    j = head(elemIndices (last n) x)+1, -- Find the index of the last element in the subsequence in the original list
+                            n `isInfixOf` x]                            -- Only include continuous subsequences
+                            )
+                    )
+                )
